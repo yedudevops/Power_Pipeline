@@ -1,4 +1,4 @@
-name: Power_Pipeline
+name: Snyk and SonarQube
 
 on:
   workflow_dispatch
@@ -51,19 +51,15 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-
-  JFrog:
-    runs-on: ubuntu-latest
-
-    steps:
+ 
       - name: Build with Maven
         run: mvn clean package
 
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
         env:
-          JF_URL: http://13.201.130.85:8081
-          JF_USER: admin
-          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+         JF_URL: http://13.201.130.85:8081
+         JF_USER: admin
+         JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
       - run: |
-          jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/"
+         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/"
