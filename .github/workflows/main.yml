@@ -58,7 +58,7 @@ jobs:
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
         env:
-         JF_URL: http://3.140.200.126:8081
+         JF_URL: http://13.201.130.85:8081
          JF_USER: admin
          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
       - run: |
