@@ -28,7 +28,7 @@ jobs:
       id: snapshot
       run: |
         timestamp=$(date "+%Y%m%d%H%M%S")
-        jar_location=$(find target -name '*.jar' -exec readlink -f {} +)
+        jar_location="${{ steps.jar.outputs.jar_location }}"
         snapshot_name="${jar_location%.*}-SNAPSHOT-${timestamp}.jar"
         cp "$jar_location" "$snapshot_name"
         echo "Snapshot created: $snapshot_name"
