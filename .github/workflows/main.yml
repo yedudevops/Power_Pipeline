@@ -51,3 +51,15 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+     
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Jfrog push v2
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+         JF_URL: http://3.140.200.126:8081
+         JF_USER: admin
+         JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+      - run: |
+         jf rt u "target/github-action-maven-tutorial-1.0-SNAPSHOT.jar" "jfrog/github-action-maven-tutorial/1.0-SNAPSHOT/github-action-maven-tutorial-1.0-SNA
