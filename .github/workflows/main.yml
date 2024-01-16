@@ -1,50 +1,65 @@
-name: Maven Build and Publish
-on:
-  workflow_dispatch:
-jobs:
-  build:
+name: Snyk and SonarQube
 
+on:
+  workflow_dispatch
+
+jobs:
+  snyk:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Set up JDK 1.8
-      uses: actions/setup-java@v1
-      with:
-        java-version: 17
+      - name: Checkout code
+        uses: actions/checkout@master
 
-    - name: Build with Maven
-      run: mvn clean package
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/maven@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          command: monitor
 
-    - name: Get JAR Location
-      run: |
-        jar_location=$(find target -name '*.jar' -exec readlink -f {} +)
-        echo "JAR Location: $jar_location"
-        echo "::set-output name=jar_location::$jar_location"
-      id: jar
+  SonarQube:
+    runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
-    - name: Create Snapshot
-      id: snapshot
-      run: |
-        timestamp=$(date "+%Y%m%d%H%M%S")
-        jar_location="${{ steps.jar.outputs.jar_location }}"
-        snapshot_name="${jar_location%.*}-SNAPSHOT-${timestamp}.jar"
-        cp "$jar_location" "$snapshot_name"
-        echo "Snapshot created: $snapshot_name"
-        echo "::set-output name=snapshot_name::$snapshot_name"
+      - name: Set up JDK 17
+        uses: actions/setup-java@v1
+        with:
+          java-version: 17
 
+      - name: Cache SonarQube packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-    - name: Deploy Snapshot
-      run: |
-        snapshot_location="${{ steps.snapshot.outputs.snapshot_name }}"
-        echo "$snapshot_location"
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-    - name: Jfrog push v2
-      uses: jfrog/setup-jfrog-cli@v2
-      env:
-        JF_URL: http://13.201.130.85:8081
-        JF_USER: admin
-        JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-    - run: |
-        jf rt u "target/github-action-maven-tutorial-1.0-SNAPSHOT.jar" "jfrog/github-action-maven-tutorial/1.0-SNAPSHOT/github-action-maven-tutorial-1.0-SNAPSHOT.jar"
+      - name: Build and analyze
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
+   
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Jfrog push v2
+        uses: jfrog/setup-jfrog-cli@v2
+        env:
+         JF_URL: http://13.201.130.85:8081
+         JF_USER: admin
+         JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+      - run: |
+         jf rt u "target/onlinebookstore-0.0.1-SNAPSHOT.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/onlinebookstore-0.0.1-SNAPSHOT.jar"
