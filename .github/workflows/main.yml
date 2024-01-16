@@ -1,65 +1,26 @@
-name: Snyk and SonarQube
-
+name: Maven Build and Publish
 on:
-  workflow_dispatch
-
+  workflow_dispatch:
 jobs:
-  snyk:
+  build:
+
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+    - uses: actions/checkout@v2
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
+    - name: Build with Maven
+      run: mvn clean package
 
-  SonarQube:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v1
-        with:
-          java-version: 17
-
-      - name: Cache SonarQube packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
-
-      - name: Cache Maven packages
-        uses: actions/cache@v1
-        with:
-          path: ~/.m2
-          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-m2
-
-      - name: Build and analyze
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
-     
-      - name: Build with Maven
-        run: mvn clean package
-
-      - name: Jfrog push v2
-        uses: jfrog/setup-jfrog-cli@v2
-        env:
-         JF_URL: http://13.201.130.85:8081
-         JF_USER: admin
-         JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-      - run: |
-         jf rt u "target/Yuvraj-Sonar-tutorial-1.0-SNAPSHOT.jar" "jfrog/github-action-maven-tutorial/1.0-SNAPSHOT/Yuvraj-Sonar-tutorial-1.0-SNAPSHOT.jar"
+    - name: Jfrog push v2
+      uses: jfrog/setup-jfrog-cli@v2
+      env:
+        JF_URL: http://3.140.200.126:8081
+        JF_USER: admin
+        JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+    - run: |
+        jf rt u "target/github-action-maven-tutorial-1.0-SNAPSHOT.jar" "jfrog/github-action-maven-tutorial/1.0-SNAPSHOT/github-action-maven-tutorial-1.0-SNAPSHOT.jar"
