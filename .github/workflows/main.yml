@@ -21,7 +21,24 @@ jobs:
         jar_location=$(find target -name '*.jar' -exec readlink -f {} +)
         echo "JAR Location: $jar_location"
         echo "::set-output name=jar_location::$jar_location"
-      id: jar  
+      id: jar
+
+
+    - name: Create Snapshot
+      id: snapshot
+      run: |
+        timestamp=$(date "+%Y%m%d%H%M%S")
+        jar_location=$(find target -name '*.jar' -exec readlink -f {} +)
+        snapshot_name="${jar_location%.*}-SNAPSHOT-${timestamp}.jar"
+        cp "$jar_location" "$snapshot_name"
+        echo "Snapshot created: $snapshot_name"
+        echo "::set-output name=snapshot_name::$snapshot_name"
+
+
+    - name: Deploy Snapshot
+      run: |
+        snapshot_location="${{ steps.snapshot.outputs.snapshot_name }}"
+        echo "$snapshot_location"
 
     - name: Jfrog push v2
       uses: jfrog/setup-jfrog-cli@v2
