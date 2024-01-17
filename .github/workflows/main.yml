@@ -62,4 +62,4 @@ on:
          JF_USER: admin
          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
       - run: |
-         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-{{ github.run_number }}"
+         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
