@@ -75,4 +75,4 @@ jobs:
 
     - name: JFrog Push
       run: |
-        jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+       jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
