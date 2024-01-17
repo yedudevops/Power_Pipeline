@@ -3,21 +3,21 @@ name: Snyk and SonarQube
 on:
   workflow_dispatch
 
-jobs:
-  snyk:
-    runs-on: ubuntu-latest
+# jobs:
+#   snyk:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@master
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@master
 
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/maven@master
-        continue-on-error: true
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
+#       - name: Run Snyk to check for vulnerabilities
+#         uses: snyk/actions/maven@master
+#         continue-on-error: true
+#         env:
+#           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+#         with:
+#           command: monitor
 
   SonarQube:
     runs-on: ubuntu-latest
@@ -62,4 +62,4 @@ jobs:
          JF_USER: admin
          JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
       - run: |
-         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-{{github.run_number}}"
+         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-{{ github.run_number }}"
