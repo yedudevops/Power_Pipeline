@@ -51,15 +51,28 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
- 
-      - name: Build with Maven
-        run: mvn clean package
 
-      - name: Jfrog push v2
-        uses: jfrog/setup-jfrog-cli@v2
-        env:
-         JF_URL: ${{ secrets.JF_URL }}
-         JF_USER: admin
-         JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-      - run: |
-         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build with Maven
+      run: mvn clean package
+
+  JFrog:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up JFrog CLI
+      uses: jfrog/setup-jfrog-cli@v2
+      env:
+        JF_URL: ${{ secrets.JF_URL }}
+        JF_USER: admin
+        JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
+
+    - name: JFrog Push
+      run: |
+        jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
