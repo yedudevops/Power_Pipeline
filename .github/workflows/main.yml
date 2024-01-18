@@ -94,4 +94,4 @@ jobs:
 
       - name: Jfrog Artifactory Upload
         run: |
-         jf rt u "${{ runner.workspace }}/downloaded-artifact/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+         jf rt u "${{ runner.workspace }}/downloaded-artifact/*.jar" "Power_Pipeline/onlinebookstore/webapp-${{ github.run_number }}"
