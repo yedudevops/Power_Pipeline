@@ -85,15 +85,14 @@ jobs:
           JF_URL: ${{ secrets.JF_URL }}
           JF_USER: ${{ secrets.JFROG_USERNAME }}
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
-      - name: JFrog scan Artifact
-        run: jfrog c show
-          
+               
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: my-artifact
           path: ${{ runner.workspace }}/downloaded-artifact
-      - name: JFrog scan Artifact
+          
+      - name: JFrog scan Artifact    # R&D on JFrog Xray
         run: jfrog xr scan "${{ runner.workspace }}/downloaded-artifact"
         
       - name: Jfrog Artifactory Upload
