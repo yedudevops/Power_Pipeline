@@ -91,9 +91,6 @@ jobs:
         with:
           name: my-artifact
           path: ${{ runner.workspace }}/downloaded-artifact
-          
-      - name: JFrog scan Artifact    # R&D on JFrog Xray
-        run: jfrog xr scan "${{ runner.workspace }}/downloaded-artifact"
         
       - name: Jfrog Artifactory Upload
         run: |
