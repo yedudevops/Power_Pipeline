@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
-          path: ${{ steps.package.outputs.artifactPath }}/target/*.jar
+          path: ${{ steps.package.outputs.artifactPath }}/target/dependency/*.jar
   JFrog:
     runs-on: ubuntu-latest
     needs: Build
@@ -34,7 +34,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: my-artifact
-          path: target/ # Specify the path where you want to download the artifact
+          path: artifact # Specify the path where you want to download the artifact
    
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
@@ -45,4 +45,4 @@ jobs:
    
       - name: Jfrog Artifactory Upload
         run: |
-          jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+          jf rt u "artifact/target/dependency/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
