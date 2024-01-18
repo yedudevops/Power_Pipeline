@@ -34,7 +34,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: my-artifact
-          path: target/*.jar # Specify the path where you want to download the artifact
+          path: target/ # Specify the path where you want to download the artifact
    
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
