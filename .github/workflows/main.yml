@@ -1,4 +1,4 @@
-name: sample_Power_Pipeline
+name: Power_Pipeline
 
 on:
   push:
