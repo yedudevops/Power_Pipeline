@@ -4,7 +4,7 @@ on:
   push
 
 jobs:
-  snyk:
+  Snyk:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,8 @@ jobs:
 
   SonarQube:
     runs-on: ubuntu-latest
-
+    needs: Snyk
+    
     steps:
       - uses: actions/checkout@v2
         with:
@@ -54,6 +55,7 @@ jobs:
 
   Build:
     runs-on: ubuntu-latest
+    needs: SonarQube
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
