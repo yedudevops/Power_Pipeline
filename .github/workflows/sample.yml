@@ -1,4 +1,4 @@
-name: Power_Pipeline
+name: Build and JFrog
  
 on:
   push
