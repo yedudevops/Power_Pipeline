@@ -74,14 +74,9 @@ jobs:
         uses: jfrog/setup-jfrog-cli@v2
         env:
           JF_URL: ${{ secrets.JF_URL }}
-          JF_USER: admin
+          JF_USER: ${{ secrets.JFROG_USERNAME }}
           JF_PASSWORD: ${{ secrets.JFROG_PASSWORD }}
 
       - name: Jfrog Artifactory Upload
         run: |
-          mvn deploy \
-            -DskipTests \
-            -DaltDeploymentRepository=jfrog::default::https://repo.maven.apache.org/maven2/com/github/jsimone/webapp-runner/8.0.30.2/webapp-runner-8.0.30.2.jar>/repo/jfrog> \
-            -DrepositoryId=jfrog \
-            -Dusername= admin \
-            -Dpassword=${{ secrets.JFROG_PASSWORD }}
+         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
