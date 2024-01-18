@@ -79,4 +79,9 @@ jobs:
 
       - name: Jfrog Artifactory Upload
         run: |
-         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+          mvn deploy \
+            -DskipTests \
+            -DaltDeploymentRepository=jfrog::default::https://repo.maven.apache.org/maven2/com/github/jsimone/webapp-runner/8.0.30.2/webapp-runner-8.0.30.2.jar>/repo/jfrog> \
+            -DrepositoryId=jfrog \
+            -Dusername= admin \
+            -Dpassword=${{ secrets.JFROG_PASSWORD }}
