@@ -91,7 +91,8 @@ jobs:
         with:
           name: my-artifact
           path: ${{ runner.workspace }}/downloaded-artifact
-
+      - name: JFrog scan Artifact
+        run: jfrog xr scan "${{ runner.workspace }}/downloaded-artifact"
       - name: Jfrog Artifactory Upload
         run: |
          jf rt u "${{ runner.workspace }}/downloaded-artifact/*.jar" "Power_Pipeline/onlinebookstore/webapp-${{ github.run_number }}"
