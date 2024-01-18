@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
-          path: ${{ steps.package.outputs.artifactPath }}/target/dependency/*.jar
+          path: ${{ steps.package.outputs.artifactPath }}/target/dependency
   JFrog:
     runs-on: ubuntu-latest
     needs: Build
