@@ -79,4 +79,4 @@ jobs:
 
       - name: Jfrog Artifactory Upload
         run: |
-         jf rt u "target/webapp-runner.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+         jf rt u "target/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
