@@ -70,6 +70,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
         
+      - name: Display directory structure
+        run: ls -R
+        
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
         env:
