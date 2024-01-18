@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: my-artifact
-          path: ${{ runner.workspace }}/target/*.jar
+          path: ${{ runner.workspace }}/Power_Pipeline/target/*.jar
 
   # JFrog:
   #   runs-on: ubuntu-latest
