@@ -52,7 +52,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar
 
-  Build-and-JFrog:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -61,6 +61,12 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+  JFrog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
         env:
