@@ -72,7 +72,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
          name: build-artifact
-         path: $GITHUB_WORKSPACE/artifacts/
+         path: target/*.jar
  
   JFrog:
     runs-on: ubuntu-latest
@@ -85,6 +85,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-artifact
+          path: target/
  
       - name: Jfrog push v2
         uses: jfrog/setup-jfrog-cli@v2
@@ -95,4 +96,4 @@ jobs:
  
       - name: Jfrog Artifactory Upload
         run: |
-         jf rt u ./*.jar  "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
+         jf rt u target/*.jar  "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
