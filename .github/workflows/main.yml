@@ -106,14 +106,14 @@ jobs:
              pwd
              ls -l
              grep Dockerfile
-          # Run commands to build and push Docker images
+             # Run commands to build and push Docker images
 
-          # Log into AWS Account using this commands.
+             # Log into AWS Account using this commands.
 
-          # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423247927.dkr.ecr.ap-south-1.amazonaws.com
-          #  Build the image.
+             # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423247927.dkr.ecr.ap-south-1.amazonaws.com
+             #  Build the image.
           
-          #docker build -t powerpipeline .
+              docker build -t powerpipeline /home/runner/work/Power_Pipeline/Power_Pipeline/Dockerfile
           
           # Tag the image name
           
