@@ -102,6 +102,8 @@ jobs:
     steps:    
        - name: Docker build and push
          run: |
+           ls 
+           pwd
           # Run commands to build and push Docker images
 
           # Log into AWS Account using this commands.
