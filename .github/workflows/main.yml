@@ -129,7 +129,7 @@ jobs:
        - name: build the image 
          run: |
               docker --version
-              docker build -t powerpipeline /home/runner/work/Power_Pipeline/Power_Pipeline/Dockerfile
+              docker build -t powerpipeline .
               ls
               pwd
              
