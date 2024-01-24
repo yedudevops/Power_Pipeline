@@ -18,6 +18,7 @@ jobs:
                pwd
                docker --version
                docker build -t powerpipeline .
+               docker tag powerpipeline:latest 609695713455.dkr.ecr.ap-southeast-1.amazonaws.com/powerpipeline:latest
           
         # - name: Set up Docker Buildx
         #   uses: docker/setup-buildx-action@v3
