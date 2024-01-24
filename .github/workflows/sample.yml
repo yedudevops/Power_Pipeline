@@ -16,6 +16,7 @@ jobs:
           run: |
                ls -l
                pwd
+               docker --version
           
         # - name: Set up Docker Buildx
         #   uses: docker/setup-buildx-action@v3
