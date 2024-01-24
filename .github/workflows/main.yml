@@ -104,7 +104,8 @@ jobs:
          run: |
              ls 
              pwd
-             ls | grep Dockerfile
+             ls -l
+             grep Dockerfile
           # Run commands to build and push Docker images
 
           # Log into AWS Account using this commands.
