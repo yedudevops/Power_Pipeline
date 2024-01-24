@@ -130,7 +130,8 @@ jobs:
          run: |
               docker --version
               docker build -t powerpipeline /home/runner/work/Power_Pipeline/Power_Pipeline/Dockerfile
-              
+              ls
+              pwd
              
       
       # - name: Login to Docker Hub
