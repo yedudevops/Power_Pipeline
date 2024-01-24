@@ -102,8 +102,8 @@ jobs:
     steps:    
        - name: Docker build and push
          run: |
-           ls 
-           pwd
+             ls 
+             pwd
           # Run commands to build and push Docker images
 
           # Log into AWS Account using this commands.
@@ -111,15 +111,15 @@ jobs:
           # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423247927.dkr.ecr.ap-south-1.amazonaws.com
           #  Build the image.
           
-          docker build -t powerpipeline .
+          #docker build -t powerpipeline .
           
           # Tag the image name
           
-          docker tag powerpipeline:latest 637423247927.dkr.ecr.ap-south-1.amazonaws.com/powerpipeline:latest
+          #docker tag powerpipeline:latest 637423247927.dkr.ecr.ap-south-1.amazonaws.com/powerpipeline:latest
           
           # push the image into aws ecr
 
-          docker push 637423247927.dkr.ecr.ap-south-1.amazonaws.com/powerpipeline:latest
+          # docker push 637423247927.dkr.ecr.ap-south-1.amazonaws.com/powerpipeline:latest
           
          env:
            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
