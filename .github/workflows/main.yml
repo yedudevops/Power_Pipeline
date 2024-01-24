@@ -102,10 +102,6 @@ jobs:
     steps:    
        - name: Docker build and push
          run: |
-             ls 
-             pwd
-             ls -l
-             grep Dockerfile
              # Run commands to build and push Docker images
 
              # Log into AWS Account using this commands.
@@ -113,7 +109,7 @@ jobs:
              # aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423247927.dkr.ecr.ap-south-1.amazonaws.com
              #  Build the image.
           
-              docker build -t powerpipeline /home/runner/work/Power_Pipeline/Power_Pipeline/Dockerfile
+             # docker build -t powerpipeline /home/runner/work/Power_Pipeline/Power_Pipeline/Dockerfile
           
           # Tag the image name
           
@@ -122,6 +118,28 @@ jobs:
           # push the image into aws ecr
 
           # docker push 637423247927.dkr.ecr.ap-south-1.amazonaws.com/powerpipeline:latest
+          #name: ci
+
+       - name: Set up QEMU
+         uses: docker/setup-qemu-action@v3
+    
+       - name: Set up Docker Buildx
+         uses: docker/setup-buildx-action@v3
+         
+       - name: build the image 
+         run:  docker build -t .
+      
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
+      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
+      
+      # - name: Build and push
+      #   uses: docker/build-push-action@v5
+      #   with:
+      #     push: true
+      #     tags: user/app:latest
           
          env:
            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
