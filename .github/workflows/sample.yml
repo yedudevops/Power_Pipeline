@@ -24,6 +24,7 @@ jobs:
           
         - name: check files
           run: |
+               docker-compose --version
                ls -l
                aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423247927.dkr.ecr.ap-south-1.amazonaws.com
                docker --version
