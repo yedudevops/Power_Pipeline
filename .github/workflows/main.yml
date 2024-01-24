@@ -96,12 +96,31 @@ jobs:
         run: |
          jf rt u "${{ runner.workspace }}/downloaded-artifact/*.jar" "jfrog/onlinebookstore/0.0.1-SNAPSHOT/webapp-${{ github.run_number }}"
 
+  Docker_Image:
+    runs-on: ubuntu-latest
+    needs: ["JFrog"]
+    steps:    
        - name: Docker build and push
          run: |
           # Run commands to build and push Docker images
-          docker build -t tic-tac-toe .
-          docker tag tic-tac-toe yedudevops/tic-tac-toe:latest
-          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker push yedudevops/tic-tac-toe:latest
-        env:
-          DOCKER_CLI_ACI: 1         
+
+          # Log into AWS Account using this commands.
+
+          aws ecr get-login-password --region ap-southeast-1 | docker login --username aws --password-stdin 609695/13455.dkr.ecr.ap-southeast-1.amazonaws.com
+
+          #  Build the image.
+
+          docker build -t powerpipeline .
+
+          # Tag the image name
+
+          docker tag powerpipeline:latest 609695713455.dkr.ecr.ap-southeast-1.amazonaws.com/powerpipeline:latest
+
+          # push the image into aws ecr
+
+          docker push 609695713455.dkr.ecr.ap-southeast-1.amazonaws.com/powerpipeline:latest 
+          
+         env:
+           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+           AWS_SESSION_TOKEN: ${{secrets.AWS_SESSION_TOKEN}}           
