@@ -11,14 +11,14 @@ COPY package*.json ./
 COPY . .
 
 # Install dependencies
-RUN npm install
+# RUN npm install
 
 
 # Build the React app
-RUN npm run build
+# RUN npm run build
 
 # Expose port 3000 (the port your Node.js app runs on)
-EXPOSE 3000
+# EXPOSE 3000
 
 # Start the Node.js app
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
