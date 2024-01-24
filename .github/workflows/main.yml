@@ -109,7 +109,7 @@ jobs:
           aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 637423247927.dkr.ecr.ap-south-1.amazonaws.com
           #  Build the image.
           
-          docker build -t powerpipeline .
+          docker build -t powerpipeline /var/lib/docker/tmp/buildkit-mount3135126063/Dockerfile
           
           # Tag the image name
           
